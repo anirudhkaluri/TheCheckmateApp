@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from .serializers import PositionSerializer
 from .utils.validMoves import get_valid_moves
+from django.http import JsonResponse
 # Create your views here.
 
 class PositionView(APIView):
@@ -17,9 +18,14 @@ class PositionView(APIView):
             error_details=e.detail
             return Response({'errors':error_details},status=400)
 
-        #board position in an ordered dictionary
+        #board is a dictionary with position as the only key 
         board=serializer.validated_data
-        valid_moves= get_valid_moves(board,slug)
-        return Response({'message':valid_moves})
+
+        #board[positions] is an ordered dictionary with locations of teh pieces
+        valid_moves= get_valid_moves(board["positions"],slug)
+        response_data={
+            'valid_moves':valid_moves
+        }
+        return JsonResponse(response_data)
 
 
