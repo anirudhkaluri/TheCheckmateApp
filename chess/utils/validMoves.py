@@ -113,7 +113,7 @@ def direct_move_exists(piece,from_position,to_position,board):
 def obstruction_exists(piece,from_position,to_position,board):
     for key,value in board.items():
         pos=(int(board[key][1]),cmap[board[key][0]])
-        if key==piece or (pos[0]==to_position[0] and pos[1]==to_position[1]):
+        if key==piece or (pos[0]==to_position[0] and pos[1]==to_position[1]) or (pos[0]==from_position[0] and pos[1]==from_position[1]):
             continue
         else:
             x1=float(from_position[0])
