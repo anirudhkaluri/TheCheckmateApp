@@ -22,7 +22,8 @@ def get_valid_moves(board,slug):
     #get a list of all possible moves as if no other piece is on the board except the slug
     possible_moves=get_all_possible_moves(slug,slug_position)
 
-
+    #check if the remaining of the board can attack those possible positions/moves and return only valid moves/positions
+    valid_moves=check_attack_on_positions(possible_moves,board)
 
     return []
 
@@ -76,6 +77,12 @@ def check_limit(position):
     return True
 
 
+def check_attack_on_positions(possible_moves,board):
+    for piece,piece_position in board:
+        for pos in possible_moves:
+            if move_exists(piece,piece_position,pos):
+                possible_moves.remove(pos)
+    return possible_moves
 
 
 
