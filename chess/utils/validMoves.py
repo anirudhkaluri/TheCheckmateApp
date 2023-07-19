@@ -13,27 +13,19 @@ reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"}
 
 #RETURNS VALID MOVES
 def get_valid_moves(board,slug):
-    
     slug=slug.title()
-   
     #returns a list [x,y] x->row y->column
     slug_position=get_slug_position(slug,board)
-    
-
     #pop slug from the board
     board.pop(slug)
-
     #get a list of all possible moves as if no other piece is on the board except the slug
-    possible_moves=get_all_possible_moves(slug,slug_position)
-  
-
+    possible_moves=get_all_possible_moves(slug,slug_position,board)
     #check if the remaining of the board can attack those possible positions/moves and return only valid moves/positions
-    valid_moves=check_attack_on_positions(possible_moves,board)
-  
+    valid_moves=check_attack_on_positions(possible_moves,board) 
+    
     answer=[]
     for item in valid_moves:
         answer.append(str(reverse_map[item[1]])+str(item[0]))
-
     return answer
 
 #returns position of slug in list form [row,column]
@@ -42,25 +34,25 @@ def get_slug_position(slug,board):
     return [int(board[slug][1]),cmap[board[slug][0]]]
 
 #returns a list of all possible positions for slug assuming there is no other piece on the board
-def get_all_possible_moves(slug,starting_position):
+def get_all_possible_moves(slug,starting_position,board):
     possible_moves=[]
     if slug=="Queen":
         #3 possible directions for queen
-        add_positions(slug,starting_position,possible_moves,[diagonal,horizontal,vertical])
+        add_positions(slug,starting_position,possible_moves,[diagonal,horizontal,vertical],board)
     elif slug=="Bishop":
         #only diagonal for bishop
-        add_positions(slug,starting_position,possible_moves,[diagonal])
+        add_positions(slug,starting_position,possible_moves,[diagonal],board)
     elif slug=="Rook":
         #horizontal and vertical for rook
-        add_positions(slug,starting_position,possible_moves,[horizontal,vertical])
+        add_positions(slug,starting_position,possible_moves,[horizontal,vertical],board)
     elif slug=="Knight":
         #knight for knight
-        add_positions(slug,starting_position,possible_moves,[knight])
+        add_positions(slug,starting_position,possible_moves,[knight],board)
     return possible_moves
 
 
 #adds positions based on the direction rules at the beginning of the file
-def add_positions(slug,starting_position,possible_moves,directions):
+def add_positions(slug,starting_position,possible_moves,directions,board):
     for direction in directions:
         for item in direction:
             pos=list(starting_position)
@@ -71,7 +63,7 @@ def add_positions(slug,starting_position,possible_moves,directions):
                     possible_moves.append(list(pos))
                     continue
             else:
-                while check_limit(pos):
+                while check_limit(pos) and not obstruction_exists(slug,starting_position,pos,board):
                     possible_moves.append(list(pos))
                     pos[0]=pos[0]+item[0]
                     pos[1]=pos[1]+item[1]
@@ -130,7 +122,7 @@ def obstruction_exists(piece,from_position,to_position,board):
             x3=float(pos[0])
             y3=float(pos[1])
             slope1=(y2-y1)/(x2-x1) if x2!=x1 else sys.maxsize
-            slope2=(y3-y2)/(x3-x1) if x3!=x1 else sys.maxsize
+            slope2=(y3-y2)/(x3-x2) if x3!=x2 else sys.maxsize
             xmax= from_position[0] if x1>x2 else to_position[0]
             xmin=from_position[0] if x1<x2 else to_position[0]
             ymax= from_position[1] if y1>y2 else to_position[1]
@@ -138,5 +130,3 @@ def obstruction_exists(piece,from_position,to_position,board):
             if slope1==slope2 and (pos[0] in range(xmin,xmax+1)) and (pos[1] in range(ymin,ymax+1)):
                 return True
     return False
-
-        
