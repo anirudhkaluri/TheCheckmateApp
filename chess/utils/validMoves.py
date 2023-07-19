@@ -15,11 +15,14 @@ def get_valid_moves(board,slug):
 
     #returns a tuple (x,y) x->row y->column
     slug_position=get_slug_position(slug,board)
+
     #pop slug from the board
     board.pop(slug)
+
     #get a list of all possible moves as if no other piece is on the board except the slug
     possible_moves=get_all_possible_moves(slug,slug_position)
-    
+
+
 
     return []
 
@@ -46,11 +49,12 @@ def get_all_possible_moves(slug,starting_position):
         add_positions(slug,starting_position,possible_moves,[knight])
     return possible_moves
 
+
 #adds positions based on the direction rules at the beginning of the file
-def add_positions(starting_position,possible_moves,directions):
+def add_positions(slug,starting_position,possible_moves,directions):
     for direction in directions:
         for item in direction:
-            pos=starting_position
+            pos=tuple(starting_position)
             pos[0]=pos[0]+item[0]
             pos[1]=pos[1]+item[1]
             if slug=="Knight":
@@ -63,6 +67,7 @@ def add_positions(starting_position,possible_moves,directions):
                     pos[0]=pos[0]+item[0]
                     pos[1]=pos[1]+item[1]
                 continue
+
 
 #checks if the (x,y) coordinate is within the board 
 def check_limit(position):
