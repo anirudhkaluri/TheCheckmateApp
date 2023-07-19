@@ -80,9 +80,29 @@ def check_limit(position):
 def check_attack_on_positions(possible_moves,board):
     for piece,piece_position in board:
         for pos in possible_moves:
-            if move_exists(piece,piece_position,pos):
+            if direct_move_exists(piece,piece_position,pos,board):
                 possible_moves.remove(pos)
     return possible_moves
 
 
+def direct_move_exists(piece,from_position,to_position,board):
+    same_position=bool(from_position[0]==to_position[0] and from_position[1]==to_position[1])
+    if same_position:
+        return True
+    same_diagonal=bool(abs(from_position[0]-to_position[0])==abs(from_position[1]-to_position[1]))
+    same_row= bool(from_position[0]-to_position[0]==0) 
+    same_column=bool(from_position[1]-to_position[0]==0)
+    obstruction=bool(obstruction_exists(from_position,to_position,board))
+    if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction:
+        return True
+    elif piece=="Bishop" and same_diagonal and not obstruction:
+        return True
+    elif piece=="Rook" and (same_row or same_column) and not obstruction:
+        return True
+    
+    for item in knight:
+        if from_position+item[0]==to_position[0] and from_position[1]+item[1]==to_position[1]:
+            return True
+    return False
 
+        
