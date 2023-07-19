@@ -1,3 +1,4 @@
+import sys
 # MOVE RULES
 #queen travels diagonal, horizontal,vertical
 #Bishop travels diagonal
@@ -8,30 +9,37 @@ horizontal=[(-1,0),(1,0)]
 vertical=[(0,1),(0,-1)]
 knight=[(2,-1),(2,1),(-2,-1),(-2,1),(1,-2),(-1,-2),(1,2),(-1,2)]
 cmap={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
+reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"}
 
 #RETURNS VALID MOVES
 def get_valid_moves(board,slug):
     
     slug=slug.title()
-
-    #returns a tuple (x,y) x->row y->column
+   
+    #returns a list [x,y] x->row y->column
     slug_position=get_slug_position(slug,board)
+    
 
     #pop slug from the board
     board.pop(slug)
 
     #get a list of all possible moves as if no other piece is on the board except the slug
     possible_moves=get_all_possible_moves(slug,slug_position)
+  
 
     #check if the remaining of the board can attack those possible positions/moves and return only valid moves/positions
     valid_moves=check_attack_on_positions(possible_moves,board)
+  
+    answer=[]
+    for item in valid_moves:
+        answer.append(str(reverse_map[item[1]])+str(item[0]))
 
-    return []
+    return answer
 
-#returns position of slug in tuple form (row,column)
+#returns position of slug in list form [row,column]
 def get_slug_position(slug,board):
     position=board[slug]
-    return (int(board[slug][1]),cmap[board[slug][0]])
+    return [int(board[slug][1]),cmap[board[slug][0]]]
 
 #returns a list of all possible positions for slug assuming there is no other piece on the board
 def get_all_possible_moves(slug,starting_position):
@@ -55,16 +63,16 @@ def get_all_possible_moves(slug,starting_position):
 def add_positions(slug,starting_position,possible_moves,directions):
     for direction in directions:
         for item in direction:
-            pos=tuple(starting_position)
+            pos=list(starting_position)
             pos[0]=pos[0]+item[0]
             pos[1]=pos[1]+item[1]
             if slug=="Knight":
                 if check_limit(pos):
-                    possible_moves.append(tuple(pos))
+                    possible_moves.append(list(pos))
                     continue
             else:
                 while check_limit(pos):
-                    possible_moves.append(tuple(pos))
+                    possible_moves.append(list(pos))
                     pos[0]=pos[0]+item[0]
                     pos[1]=pos[1]+item[1]
                 continue
@@ -78,35 +86,39 @@ def check_limit(position):
 
 
 def check_attack_on_positions(possible_moves,board):
-    for piece,piece_position in board:
-        for pos in possible_moves:
-            if direct_move_exists(piece,piece_position,pos,board):
-                possible_moves.remove(pos)
+    attack_positions=[]
+    for piece,piece_position in board.items():
+        from_position=[int(piece_position[1]),cmap[piece_position[0]]]
+        for to_position in possible_moves:
+            if direct_move_exists(piece,from_position,to_position,board):
+                attack_positions.append(to_position)
+    possible_moves=[sublist for sublist in possible_moves if sublist not in attack_positions]
     return possible_moves
 
 
 def direct_move_exists(piece,from_position,to_position,board):
+
     same_position=bool(from_position[0]==to_position[0] and from_position[1]==to_position[1])
     if same_position:
-        return True
+        return False
     same_diagonal=bool(abs(from_position[0]-to_position[0])==abs(from_position[1]-to_position[1]))
     same_row= bool(from_position[0]-to_position[0]==0) 
-    same_column=bool(from_position[1]-to_position[0]==0)
-    obstruction=bool(obstruction_exists(from_position,to_position,board))
+    same_column=bool(from_position[1]-to_position[1]==0)
+    obstruction=bool(obstruction_exists(piece,from_position,to_position,board))
     if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction:
         return True
     elif piece=="Bishop" and same_diagonal and not obstruction:
         return True
     elif piece=="Rook" and (same_row or same_column) and not obstruction:
         return True
-    
-    for item in knight:
-        if from_position+item[0]==to_position[0] and from_position[1]+item[1]==to_position[1]:
-            return True
+    elif piece=="Knight":
+        for item in knight:
+            if from_position[0]+item[0]==to_position[0] and from_position[1]+item[1]==to_position[1]:
+                return True
     return False
 
 def obstruction_exists(piece,from_position,to_position,board):
-    for key,value in board:
+    for key,value in board.items():
         if key==piece:
             continue
         else:
@@ -117,8 +129,8 @@ def obstruction_exists(piece,from_position,to_position,board):
             y2=float(to_position[1])
             x3=float(pos[0])
             y3=float(pos[1])
-            slope1=(y2-y1)/(x2-x1)
-            slope2=(y3-y2)/(x3-x1)
+            slope1=(y2-y1)/(x2-x1) if x2!=x1 else sys.maxsize
+            slope2=(y3-y2)/(x3-x1) if x3!=x1 else sys.maxsize
             xmax= from_position[0] if x1>x2 else to_position[0]
             xmin=from_position[0] if x1<x2 else to_position[0]
             ymax= from_position[1] if y1>y2 else to_position[1]
