@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from .serializers import PositionSerializer
-from .utils import validMoves
+from .utils.validMoves import get_valid_moves
 # Create your views here.
 
 class PositionView(APIView):
@@ -19,7 +19,7 @@ class PositionView(APIView):
 
         #board position in an ordered dictionary
         board=serializer.validated_data
-        valid_moves= validMoves(board,slug.title())
+        valid_moves= get_valid_moves(board,slug)
         return Response({'message':valid_moves})
 
 
