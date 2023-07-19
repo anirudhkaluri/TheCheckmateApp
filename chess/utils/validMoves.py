@@ -64,6 +64,12 @@ def add_positions(starting_position,possible_moves,directions):
                     pos[1]=pos[1]+item[1]
                 continue
 
+#checks if the (x,y) coordinate is within the board 
+def check_limit(position):
+    if position[0]<1 or position[0]>8 or position[1]<1 or position[1]>8 :
+        return False
+    return True
+
 
 
 
