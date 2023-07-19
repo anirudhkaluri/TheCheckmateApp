@@ -20,9 +20,10 @@ def get_valid_moves(board,slug):
     board.pop(slug)
     #get a list of all possible moves as if no other piece is on the board except the slug
     possible_moves=get_all_possible_moves(slug,slug_position,board)
+    print(f"possible moves are={possible_moves}")
     #check if the remaining of the board can attack those possible positions/moves and return only valid moves/positions
     valid_moves=check_attack_on_positions(possible_moves,board) 
-    
+    #convert coordinate points to chess terminology  
     answer=[]
     for item in valid_moves:
         answer.append(str(reverse_map[item[1]])+str(item[0]))
@@ -111,10 +112,10 @@ def direct_move_exists(piece,from_position,to_position,board):
 
 def obstruction_exists(piece,from_position,to_position,board):
     for key,value in board.items():
-        if key==piece:
+        pos=(int(board[key][1]),cmap[board[key][0]])
+        if key==piece or (pos[0]==to_position[0] and pos[1]==to_position[1]):
             continue
         else:
-            pos=(int(board[key][1]),cmap[board[key][0]])
             x1=float(from_position[0])
             y1=float(from_position[1])
             x2=float(to_position[0])
@@ -128,5 +129,7 @@ def obstruction_exists(piece,from_position,to_position,board):
             ymax= from_position[1] if y1>y2 else to_position[1]
             ymin= from_position[1] if y1<y2 else to_position[1]
             if slope1==slope2 and (pos[0] in range(xmin,xmax+1)) and (pos[1] in range(ymin,ymax+1)):
+                print(f"The piece is {piece} and the Key is {key}")
+                print(f"obstruction from {from_position} to {to_position} by {key} at {pos}")
                 return True
     return False
