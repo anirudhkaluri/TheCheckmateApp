@@ -6,6 +6,7 @@ class HelperSerializer(serializers.Serializer):
     Bishop=serializers.CharField(required=False)
     Rook=serializers.CharField(required=False)
     Knight=serializers.CharField(required=False)
+   
 
 class PositionSerializer(serializers.Serializer):
     positions=HelperSerializer()
