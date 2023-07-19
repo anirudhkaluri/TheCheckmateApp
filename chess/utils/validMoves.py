@@ -7,6 +7,7 @@ diagonal=[(1,1),(-1,-1),(-1,1),(1,-1)]
 horizontal=[(-1,0),(1,0)]
 vertical=[(0,1),(0,-1)]
 knight=[(2,-1),(2,1),(-2,-1),(-2,1),(1,-2),(-1,-2),(1,2),(-1,2)]
+cmap={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
 
 #RETURNS VALID MOVES
 def get_valid_moves(board,slug):
@@ -29,7 +30,6 @@ def get_valid_moves(board,slug):
 
 #returns position of slug in tuple form (row,column)
 def get_slug_position(slug,board):
-    cmap={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
     position=board[slug]
     return (int(board[slug][1]),cmap[board[slug][0]])
 
@@ -103,6 +103,28 @@ def direct_move_exists(piece,from_position,to_position,board):
     for item in knight:
         if from_position+item[0]==to_position[0] and from_position[1]+item[1]==to_position[1]:
             return True
+    return False
+
+def obstruction_exists(piece,from_position,to_position,board):
+    for key,value in board:
+        if key==piece:
+            continue
+        else:
+            pos=(int(board[key][1]),cmap[board[key][0]])
+            x1=float(from_position[0])
+            y1=float(from_position[1])
+            x2=float(to_position[0])
+            y2=float(to_position[1])
+            x3=float(pos[0])
+            y3=float(pos[1])
+            slope1=(y2-y1)/(x2-x1)
+            slope2=(y3-y2)/(x3-x1)
+            xmax= from_position[0] if x1>x2 else to_position[0]
+            xmin=from_position[0] if x1<x2 else to_position[0]
+            ymax= from_position[1] if y1>y2 else to_position[1]
+            ymin= from_position[1] if y1<y2 else to_position[1]
+            if slope1==slope2 and (pos[0] in range(xmin,xmax+1)) and (pos[1] in range(ymin,ymax+1)):
+                return True
     return False
 
         
