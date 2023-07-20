@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,6 +81,38 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+
+LOGGING={
+    'version':1,
+    'disable_existing_loggers':False,
+
+    'formatters':{
+        'detailed':{
+            "format":"{levelname}-{name}- {asctime}- {module}- {message}",
+            'style':'{',
+        }
+    },
+
+    'handlers': {
+
+        'file':{
+            'class':'logging.FileHandler',
+            'filename':'project.log',
+            'formatter':'detailed'
+        },
+    },
+
+    'loggers':{
+        'chess.views':{
+            'handlers':['file'],
+            'level':'INFO',
+            'propagate':True,
+        }
+    }
+
+
 }
 
 
