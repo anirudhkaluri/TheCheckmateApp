@@ -30,7 +30,7 @@ After the App starts running, there are three ways to test:
 
 
 2) TESTING WITH CURL
-    • Open CurlTests.txt file present in the repository.
+    • Open CurlTests.txt file present in the directory.
     • Copy a curl command.
     • Run it in the command line on the terminal.
     • Verify the output with the expected output present in the same file.
@@ -42,7 +42,7 @@ After the App starts running, there are three ways to test:
     • Open Postman desktop application
     • Click on File
     • Select import
-    • Browse to the Infilect.postman_collection.json file present in the repository
+    • Browse to the Infilect.postman_collection.json file present in the directory.
     • Add as a new collection
     • Run each request in the collection
 
