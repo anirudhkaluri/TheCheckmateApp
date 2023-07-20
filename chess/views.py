@@ -22,6 +22,7 @@ class PositionView(APIView):
             serializer.is_valid(raise_exception=True)
         except ValidationError as e:
             error_details=e.detail
+            logger.info(f"Error for the data {request.data}")
             logger.error(error_details)
             return Response({'errors':error_details},status=400)
 
