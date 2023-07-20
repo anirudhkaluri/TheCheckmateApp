@@ -8,11 +8,14 @@ diagonal=[(1,1),(-1,-1),(-1,1),(1,-1)]
 horizontal=[(-1,0),(1,0)]
 vertical=[(0,1),(0,-1)]
 knight=[(2,-1),(2,1),(-2,-1),(-2,1),(1,-2),(-1,-2),(1,2),(-1,2)]
+
+#Maps for converting numerical coordinates to chess terminology and vice versea
 column_map={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
 row_map={"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
-reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"} #for converting numerica coordinates to chess terminology
+reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"} 
 
 #RETURNS VALID MOVES
+#DATA THOROGHLY VALIDATED BEFORE CALLING METHODS IN THE MODULEE
 def get_valid_moves(board:dict[str,str],slug:str)->list[str]:
     
     #returns a list [x,y] x->row y->column
@@ -39,21 +42,21 @@ def get_coordinate_position(position:str)->list[int]:
 def get_all_possible_moves(slug:str,starting_position:list,board:dict[str,str])->list[list[int]]:
     possible_moves=[]
     if slug=="Queen":
-        #3 possible directions for queen
+        #3 possible directions for queen- diagonal, horizontal, vertical
         add_positions(slug,starting_position,possible_moves,[diagonal,horizontal,vertical],board)
     elif slug=="Bishop":
-        #only diagonal for bishop
+        #only diagonal direction for bishop
         add_positions(slug,starting_position,possible_moves,[diagonal],board)
     elif slug=="Rook":
         #horizontal and vertical directions possible for rook
         add_positions(slug,starting_position,possible_moves,[horizontal,vertical],board)
     elif slug=="Knight":
-        #Knight for knight
+        #Knight jumps with directions in the knight constant
         add_positions(slug,starting_position,possible_moves,[knight],board)
     return possible_moves
 
 
-#adds positions based on the direction rules given at the beginning of the file
+#adds positions based on the direction rules given at the beginning of the module
 #axes is a list of axis across which the slug can move. it is a list of lists. 
 #If the slug is a queen, the axes are diagonal, horizontal, vertical
 #all the possible moves are stored in possible_moves list
@@ -80,7 +83,7 @@ def add_positions(slug:str,starting_position:list[int],possible_moves:list[int],
                 continue
 
 
-#checks if the (x,y) coordinate is within the board 
+#checks if the (x,y) or (row,column) coordinate is within the 8X8  board 
 def check_limit(position:list[int])->bool:
     if position[0]<1 or position[0]>8 or position[1]<1 or position[1]>8 :
         return False
@@ -95,7 +98,7 @@ def check_attack_on_positions(possible_moves:list[list[int]],board:dict[str,str]
             #if a direct move exists from position1 to target_position without obstruction, target_position can be attacked
             if direct_move_exists(piece,position1,target_position,board):
                 attack_positions.append(target_position)
-    #remove all the positions that can be attacked from possible_moves. They are the valid moves
+    #remove all the positions that can be attacked from possible_moves. The result is valid_moves
     valid_moves=[sublist for sublist in possible_moves if sublist not in attack_positions]
     return valid_moves
 
@@ -110,7 +113,8 @@ def direct_move_exists(piece:str,position1:list[int],position2:list[int],board:d
     same_column=bool(position1[1]-position2[1]==0)
     #check if there is any obstuction b/w position1 and position2 due to other pieces on the board
     obstruction=bool(obstruction_exists(position1,position2,board))
-    if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction: #for queen we check diagonal, row, column
+    #for queen we check if two positions are on the same diagonal, row, column
+    if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction: 
         return True
     elif piece=="Bishop" and same_diagonal and not obstruction: #for bishop we check only diagonal
         return True
@@ -137,6 +141,7 @@ def obstruction_exists(position1:list[int],position2:list[int],board:dict[str,st
             y2=float(position2[1])
             x3=float(position3[0])
             y3=float(position3[1])
+            #calculate slopes. if slopes among 3 points are equal they are collinear
             slope1=(y2-y1)/(x2-x1) if x2!=x1 else sys.maxsize
             slope2=(y3-y2)/(x3-x2) if x3!=x2 else sys.maxsize
             xmax= position1[0] if x1>x2 else position2[0]
