@@ -90,7 +90,7 @@ class PositionViewTest(TestCase):
     #testing for a positive outcome 
     def test_position_view_positive(self):
         request_data={"positions": {"Queen": "D5", "Bishop": "H1", "Rook":"A1","Knight":"F3"}}
-        response=self.client.post('/chess/bishop/',request_data,format='json')
+        response=self.client.post('/chess/bishop',request_data,format='json')
         self.assertEqual(response.status_code,200)
         expected_response_data={"valid_moves": ["G2"]}
         #both expected outcome and actual response must be same
@@ -100,14 +100,14 @@ class PositionViewTest(TestCase):
     #testing for invalid position for Rook at N9. N9 is invalid position. 
     def test_position_view_invalid_position(self):
         request_data={"positions": {"Queen": "G2", "Bishop": "H1", "Rook":"N9","Knight":"G1"}}
-        response=self.client.post('/chess/bishop/',request_data,format='json')
+        response=self.client.post('/chess/queen',request_data,format='json')
         self.assertEqual(response.status_code,400)
     
     #testing for two pieces at the same position. The serialization validation fails. The view will return a 400 code
     #Both queen and bishop occupy G2 
     def test_position_view_duplicate_position(self):
         request_data={"positions": {"Queen": "G2", "Bishop": "G2", "Rook":"A8","Knight":"G1"}}
-        response=self.client.post('/chess/bishop/',request_data,format='json')
+        response=self.client.post('/chess/rook',request_data,format='json')
         self.assertEqual(response.status_code,400)
 
      
