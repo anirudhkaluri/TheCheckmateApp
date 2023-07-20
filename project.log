@@ -1,0 +1,43 @@
+INFO 2023-07-20 05:41:38,620 views This is for information only
+INFO-chess.views- 2023-07-20 05:47:08,537- views- This is for information only
+INFO-chess.views- 2023-07-20 06:06:16,709- views- This is for information only
+INFO-chess.views- 2023-07-20 06:07:01,302- views- This is for information only
+INFO-chess.views- 2023-07-20 06:13:26,317- views- This is for information only
+ERROR-chess.views- 2023-07-20 06:41:00,665- views- {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+Traceback (most recent call last):
+  File "/code/chess/views.py", line 21, in post
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.10/site-packages/rest_framework/serializers.py", line 235, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:41:26,182- views- {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+Traceback (most recent call last):
+  File "/code/chess/views.py", line 21, in post
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.10/site-packages/rest_framework/serializers.py", line 235, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:41:41,514- views- {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+Traceback (most recent call last):
+  File "/code/chess/views.py", line 21, in post
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.10/site-packages/rest_framework/serializers.py", line 235, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:41:48,418- views- {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+Traceback (most recent call last):
+  File "/code/chess/views.py", line 21, in post
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.10/site-packages/rest_framework/serializers.py", line 235, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='Invalid chess Pieces given in request data', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:41:58,543- views- {'non_field_errors': [ErrorDetail(string='Invalid positions given to the chess pieces', code='invalid')]}
+Traceback (most recent call last):
+  File "/code/chess/views.py", line 21, in post
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.10/site-packages/rest_framework/serializers.py", line 235, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(string='Invalid positions given to the chess pieces', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:42:52,865- views- {'non_field_errors': [ErrorDetail(string='Invalid positions given to the chess pieces', code='invalid')]}
+ERROR-chess.views- 2023-07-20 06:57:23,567- views- {'positions': {'positions': [ErrorDetail(string='Not a valid string.', code='invalid')]}}
+ERROR-chess.views- 2023-07-20 07:37:19,289- views- {'non_field_errors': [ErrorDetail(string='Invalid slug. Provide a slug present on the board', code='invalid')]}
