@@ -50,7 +50,8 @@ class PositionView(APIView):
             'valid_moves':valid_moves
         }
         #set cache key and enter the request into the cache
-        cache.set(cache_key,response_data,60*2)
+        #The default time is set to none i.e. it  will persis in cache until it is not cleared,explicitly deleted, or full capcity
+        cache.set(cache_key,response_data)
 
         return JsonResponse(response_data)
 
