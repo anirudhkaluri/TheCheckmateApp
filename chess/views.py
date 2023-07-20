@@ -36,12 +36,15 @@ class PositionView(APIView):
         #slug is the piece for which we find the valid moves
         slug=serializer.validated_data['slug']
 
+        #search in the cache
         new_dict=dict(board)
         new_dict['slug']=slug
+        #since input is a dictionary serialize it to json to create a cache key
+        #sort the keys. the keys are limited and are unique.
         cache_key=json.dumps(new_dict,sort_keys=True)
         cached_response=cache.get(cache_key)
         if cached_response is not None:
-            return JsonResponse(cached_response)
+            return JsonResponse(cached_response) #return response if there is a chached key
        
 
         # use get_valid_moves to get all moves which the slug can take given the board's configuration
@@ -51,7 +54,7 @@ class PositionView(APIView):
         response_data={
             'valid_moves':valid_moves
         }
-
+        #set cache key 
         cache.set(cache_key,response_data,60*2)
 
         return JsonResponse(response_data)
