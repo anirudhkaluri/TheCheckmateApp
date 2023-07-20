@@ -72,6 +72,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'assignment.wsgi.application'
 
+CACHES={
+     'default':{
+        'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'chessappcache',
+     }
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
