@@ -33,6 +33,7 @@ class PositionSerializer(serializers.Serializer):
                 raise serializers.ValidationError("Two pieces cant be at the same time in the same position")
             if piece in set_of_pieces:
                 raise serializers.ValidationError("There cant be two pieces of same type.")
+            
             set_of_pieces.add(piece)
             set_of_positions.add(position)
     
