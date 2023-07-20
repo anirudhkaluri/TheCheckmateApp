@@ -14,13 +14,14 @@ logger=logging.getLogger('chess.views')
 
 class PositionView(APIView):
     def post(self,request,slug,format='json'):
-        logger.info("This is for information only")
+        
         #deserialize the input json data
         serializer=PositionSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
         except ValidationError as e:
             error_details=e.detail
+            logger.error(error_details)
             return Response({'errors':error_details},status=400)
 
         #board is a dictionary with position as the only key 
