@@ -14,7 +14,7 @@ reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"} #for converting nu
 
 #RETURNS VALID MOVES
 def get_valid_moves(board,slug):
-    slug=slug.title()
+
     #returns a list [x,y] x->row y->column
     slug_position=get_coordinate_position(board[slug])
     #pop slug from the board
