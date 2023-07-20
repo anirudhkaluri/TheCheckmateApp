@@ -11,12 +11,27 @@ class PositionTest(TestCase):
     def setUp(self):
         self.client=APIClient()
     
-    def test_valid_positions(self):
+    def test_position_view_positive(self):
         request_data={"positions": {"Queen": "D5", "Bishop": "H1", "Rook":"A1","Knight":"F3"}}
         response=self.client.post('/chess/bishop/',request_data,format='json')
         self.assertEqual(response.status_code,200)
         expected_response_data={"valid_moves": ["G2"]}
         self.assertEqual(response.content,JsonResponse(expected_response_data).content) 
+    
+    def test_position_view_missing_position(self):
+        request_data={"positions": {"Queen": "", "Bishop": "H1", "Rook":"A1","Knight":"F3"}}
+        response=self.client.post('/chess/knight/',request_data,format='json')
+        self.assertEqual(response.status_code,400)
+    
+    def test_position_view_invalid_position(self):
+        request_data={"positions": {"Queen": "G2", "Bishop": "H1", "Rook":"N9","Knight":"G1"}}
+        response=self.client.post('/chess/bishop/',request_data,format='json')
+        self.assertEqual(response.status_code,400)
+    
+    def test_position_view_duplicate_position(self):
+        request_data={"positions": {"Queen": "G2", "Bishop": "G2", "Rook":"N9","Knight":"G1"}}
+        response=self.client.post('/chess/bishop/',request_data,format='json')
+        self.assertEqual(response.status_code,400)
     
 
 class ValidMovesTestCase(TestCase):
