@@ -78,14 +78,15 @@ def check_limit(position):
         return False
     return True
 
-#given a set of possible positions in possible_moves, return only those moves which wont be attacked
+#given a set of possible_moves, return only those moves which wont be attacked by pieces on the board 
 def check_attack_on_positions(possible_moves,board):
-    attack_positions=[]
+    attack_positions=[] #stores all positions that can be attacked
     for piece,piece_position in board.items():
-        from_position=[int(piece_position[1]),column_map[piece_position[0]]]
-        for to_position in possible_moves:
-            if direct_move_exists(piece,from_position,to_position,board):
-                attack_positions.append(to_position)
+        position1= get_coordinate_position(piece_position)
+        for target_position in possible_moves:
+            #if a direct move exists from position1 to target_position without obstruction, target_position can be attacked
+            if direct_move_exists(piece,position1,target_position,board):
+                attack_positions.append(target_position)
     valid_moves=[sublist for sublist in possible_moves if sublist not in attack_positions]
     return valid_moves
 
