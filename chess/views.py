@@ -25,7 +25,7 @@ class PositionView(APIView):
         except ValidationError as e:
             error_details=e.detail
             #log both request data and error whenever there is an error/exception
-            logger.info(f"Error for the data {request.data}")
+            logger.info(f"For the data {request.data}")
             logger.error(error_details)
             return Response({'errors':error_details},status=400)
 
