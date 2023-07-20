@@ -41,3 +41,5 @@ rest_framework.exceptions.ValidationError: {'non_field_errors': [ErrorDetail(str
 ERROR-chess.views- 2023-07-20 06:42:52,865- views- {'non_field_errors': [ErrorDetail(string='Invalid positions given to the chess pieces', code='invalid')]}
 ERROR-chess.views- 2023-07-20 06:57:23,567- views- {'positions': {'positions': [ErrorDetail(string='Not a valid string.', code='invalid')]}}
 ERROR-chess.views- 2023-07-20 07:37:19,289- views- {'non_field_errors': [ErrorDetail(string='Invalid slug. Provide a slug present on the board', code='invalid')]}
+INFO-chess.views- 2023-07-20 07:59:04,378- views- Error for the data {'positions': {'Queen': 'D5', 'Bishop': 'H1', 'Rook': 'A1', 'Knight': 'F3'}, 'slug': 'sadfas'}
+ERROR-chess.views- 2023-07-20 07:59:04,381- views- {'non_field_errors': [ErrorDetail(string='Invalid slug. Provide a slug present on the board', code='invalid')]}

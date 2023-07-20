@@ -15,4 +15,6 @@ class PositionTest(TestCase):
         response=self.client.post('/chess/bishop/',request_data,format='json')
         self.assertEqual(response.status_code,200)
         expected_response_data={"valid_moves": ["G2"]}
-        self.assertEqual(response.content,JsonResponse(expected_response_data).content)
+        self.assertEqual(response.content,JsonResponse(expected_response_data).content) 
+    
+
