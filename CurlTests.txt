@@ -1,0 +1,99 @@
+curl --location '127.0.0.1:8000/chess/knight/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "E7", 
+        "Bishop": "B7", 
+        "Rook":"G5",
+        "Knight":"C3"
+    }
+
+}'
+
+
+curl --location '127.0.0.1:8000/chess/queen/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "H1", 
+        "Bishop": "B7", 
+        "Rook":"H8",
+        "Knight":"F2"
+    }
+
+}'
+
+
+curl --location '127.0.0.1:8000/chess/rook/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "A5", 
+        "Bishop": "G8", 
+        "Rook":"H5",
+        "Knight":"G4"
+    }
+
+}'
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "F3", 
+        "Bishop": "H1", 
+        "Rook":"H8",
+        "Knight":"G5"
+    }
+}'
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "D5", 
+        "Bishop": "H1", 
+        "Rook":"A1",
+        "Knight":"F3"
+    }
+}'
+
+
+curl --location '127.0.0.1:8000/chess/rook/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "A1", 
+        "Bishop": "G5", 
+        "Rook":"D5",
+        "Knight":"H8"
+    }
+}'
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "G2", 
+        "Bishop": "H1", 
+        "Rook":"H2",
+        "Knight":"G1"
+    }
+}'
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "", 
+        "Bishop": "H1", 
+        "Rook":"H2",
+        "Knight":"G1",
+        "Pawn":"A2"
+    }
+}'
+
+
