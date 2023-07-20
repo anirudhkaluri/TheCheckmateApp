@@ -25,7 +25,7 @@ class SerializerTest(TestCase):
         self.assertTrue(serializer.is_valid(raise_exception=True))
        
 
-    def test_invalid_data(self):
+    def test_invalid_piece(self):
         data={
             "positions":{
                 "Queen": "G2", 
@@ -39,13 +39,38 @@ class SerializerTest(TestCase):
         serializer=PositionSerializer(data=data)
         self.assertFalse(serializer.is_valid(raise_exception=False))
         #serialize.errors is of type dictionary of size 1 with key=non_field_errors
-        #the error is not in fields but its a non_field_error.
+        #It is a non_field_error because the validation is done by overriding the validate() i.e. it is a custom validation logic
         #the type of serialize.errors['non_field_errors'] is a list
         #serialize.errors['non_field_errors'][0] is an object of type ErrorDetail
         #However, its __str__ is overridden to written the string or the message it carries
+       
         expected_error=[ErrorDetail(string="No such chess pieces. Invalid chess Pieces given in request data",code="invalid")]
         self.assertEqual(serializer.errors['non_field_errors'],expected_error)
         self.assertEqual(serializer.errors['non_field_errors'][0],expected_error[0])
+
+    def test_missing_position(self):
+        data={
+            "positions": {
+                "Queen": "", 
+                "Bishop": "H1", 
+                "Rook":"H2",
+                "Knight":"G1",
+            },
+            "slug":"bishop"
+        }
+        serializer=PositionSerializer(data=data)
+        self.assertFalse(serializer.is_valid(raise_exception=False))
+        expected_error=[ErrorDetail(string='This field may not be blank.', code='blank')]
+        #serialize.errors is of type dictionary with key='positions' 
+        #serialize.errors[positions] is another dictionary whose keys are serializers.CharFields()
+        #by default CharFields() sets allow_blank to False
+        #Hence positions=serializers.DictField(child=CharField()) fails validation
+        #It is a field error. The field is 'positions'. The key in the dictionary is Queen at which the CharField is blank
+        #That is the point where we get the ErrorDetail object which returns a string with error message
+        self.assertEqual(serializer.errors['positions']['Queen'][0],expected_error[0])
+        
+
+
 
 class PositionTest(TestCase):
     def setUp(self):
