@@ -10,6 +10,14 @@ curl --location '127.0.0.1:8000/chess/knight/' \
 
 }'
 
+Expected Output:
+{"valid_moves": [ "B1","D1","A4", "A2"]}
+
+
+
+
+
+
 
 curl --location '127.0.0.1:8000/chess/queen/' \
 --header 'Content-Type: application/json' \
@@ -22,6 +30,73 @@ curl --location '127.0.0.1:8000/chess/queen/' \
     }
 
 }'
+
+Expected output:
+{"valid_moves": ["B7","H8","G1","F1","E1","C1","B1","A1"]}
+
+
+
+
+
+
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queens": "",
+        "Bishop": "B7",
+        "Rook":"G5",
+        "Knight":"C3"
+    }
+
+}'
+
+Expected output:
+{"errors":{"positions":{"Queen":["This field may not be blank."]}}}
+
+
+
+
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queensland": "E7",
+        "Bishop": "B7",
+        "Rook":"G5",
+        "Knight":"C3"
+    }
+
+}'
+
+Expected output:
+{"errors":{"non_field_errors":["No such chess pieces. Invalid chess Pieces given in request data"]}}
+
+
+
+
+
+
+curl --location '127.0.0.1:8000/chess/bishop/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+       
+    }
+
+}'
+
+Expected output:
+{"errors":{"non_field_errors":["Invalid slug. Provide a slug present on the board"]}}
+
+
+
+
+
 
 
 curl --location '127.0.0.1:8000/chess/rook/' \
@@ -37,6 +112,17 @@ curl --location '127.0.0.1:8000/chess/rook/' \
 }'
 
 
+Expected output:
+{"valid_moves": ["H4", "H3", "H1", "H8", "A5"]}
+
+
+
+
+
+
+
+
+
 curl --location '127.0.0.1:8000/chess/bishop/' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -48,6 +134,14 @@ curl --location '127.0.0.1:8000/chess/bishop/' \
     }
 }'
 
+Expected Output:
+{"valid_moves": []}
+
+
+
+
+
+
 curl --location '127.0.0.1:8000/chess/bishop/' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -58,6 +152,13 @@ curl --location '127.0.0.1:8000/chess/bishop/' \
         "Knight":"F3"
     }
 }'
+
+Expected output:
+{"valid_moves": ["G2"]}
+
+
+
+
 
 
 curl --location '127.0.0.1:8000/chess/rook/' \
@@ -71,6 +172,15 @@ curl --location '127.0.0.1:8000/chess/rook/' \
     }
 }'
 
+Expected output:
+{"valid_moves": ["D3", "D6", "D7", "F5", "G5", "C5", "B5"]}
+
+
+
+
+
+
+
 
 curl --location '127.0.0.1:8000/chess/bishop/' \
 --header 'Content-Type: application/json' \
@@ -83,17 +193,47 @@ curl --location '127.0.0.1:8000/chess/bishop/' \
     }
 }'
 
+Epxected Output:
+{"valid_moves": []}
+
+
+
+
+
+
+
+curl --location '127.0.0.1:8000/chess/queen/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "positions": {
+        "Queen": "H1", 
+        "Bishop": "A8", 
+        "Rook":"H8",
+        "Knight":"D3"
+    }
+}'
+
+Expected output:
+{"valid_moves": ["H8", "G1", "F1", "D1", "B1", "A1"]}
+
+
+
+
+
 
 curl --location '127.0.0.1:8000/chess/bishop/' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
-        "Queen": "", 
-        "Bishop": "H1", 
-        "Rook":"H2",
-        "Knight":"G1",
-        "Pawn":"A2"
+        "Queen": "E7",
+        "Bishop": "B7",
+        "Rook":"G5",
+        "Knight":"C3"
     }
+
 }'
+
+Expected output:
+{"valid_moves": ["C8", "A6", "C6", "F3", "H1", "A8"]}
 
 
