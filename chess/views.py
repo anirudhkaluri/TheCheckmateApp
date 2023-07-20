@@ -51,7 +51,7 @@ class PositionView(APIView):
         }
         #set cache key and enter the request into the cache
         #The default time is set to none i.e. it  will persis in cache until it is not cleared,explicitly deleted, or full capcity
-        cache.set(cache_key,response_data)
+        cache.set(cache_key,response_data,60*2)
 
         return JsonResponse(response_data)
 
@@ -62,10 +62,10 @@ def get_from_cache(board:dict[str,str],slug:str)->list:
     #since input is a dictionary serialize it to json to create a cache key
     #sort the keys. the keys are limited and are unique.
     cache_key=json.dumps(new_dict,sort_keys=True)
-    #remove special character from cache key
-    cache_key = re.sub(r'[,":{} ]', '', cache_key)
+    #remove special character from cache key. Not recommended to generate cache key with special characters.
+    cache_key = re.sub(r'[,":{} ]', '', cache_key) #regular expression to remove special characters
     cached_response=cache.get(cache_key)
     return [cached_response,cache_key]
 
 
-#TO-DO implement cache eviction policies when cache is full
+#FUTURE DEVELOPEMENT: implement cache eviction policies when cache is full
