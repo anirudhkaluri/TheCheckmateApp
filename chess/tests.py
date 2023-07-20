@@ -2,10 +2,50 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase,APIClient
+from rest_framework.exceptions import ErrorDetail
 from django.http import JsonResponse
 from .utils.validMoves import get_valid_moves
+from .serializers import PositionSerializer
 
 # Create your tests here.
+
+
+class SerializerTest(TestCase):
+    def test_valid_data(self):
+        data={
+            "positions":{
+                "Queen": "A5", 
+                "Bishop": "G8", 
+                "Rook":"H5",
+                "Knight":"G4"
+            },
+            "slug":"rook"
+        }
+        serializer=PositionSerializer(data=data)
+        self.assertTrue(serializer.is_valid(raise_exception=True))
+       
+
+    def test_invalid_data(self):
+        data={
+            "positions":{
+                "Queen": "G2", 
+                "Bishop": "H1", 
+                "Rook":"H2",
+                "Knight":"G1",
+                "Pawn":"A2"
+            },
+            "slug":"rook"
+        }
+        serializer=PositionSerializer(data=data)
+        self.assertFalse(serializer.is_valid(raise_exception=False))
+        #serialize.errors is of type dictionary of size 1 with key=non_field_errors
+        #the error is not in fields but its a non_field_error.
+        #the type of serialize.errors['non_field_errors'] is a list
+        #serialize.errors['non_field_errors'][0] is an object of type ErrorDetail
+        #However, its __str__ is overridden to written the string or the message it carries
+        expected_error=[ErrorDetail(string="No such chess pieces. Invalid chess Pieces given in request data",code="invalid")]
+        self.assertEqual(serializer.errors['non_field_errors'],expected_error)
+        self.assertEqual(serializer.errors['non_field_errors'][0],expected_error[0])
 
 class PositionTest(TestCase):
     def setUp(self):
@@ -32,7 +72,8 @@ class PositionTest(TestCase):
         request_data={"positions": {"Queen": "G2", "Bishop": "G2", "Rook":"N9","Knight":"G1"}}
         response=self.client.post('/chess/bishop/',request_data,format='json')
         self.assertEqual(response.status_code,400)
-    
+
+     
 
 class ValidMovesTestCase(TestCase):
     def test_get_valid_moves(self):
