@@ -5,11 +5,16 @@ from rest_framework.exceptions import ValidationError
 from .serializers import PositionSerializer
 from .utils.validMoves import get_valid_moves
 from django.http import JsonResponse
-# Create your views here.
+import logging
+
+
+logger=logging.getLogger('chess.views')
+
+
 
 class PositionView(APIView):
     def post(self,request,slug,format='json'):
-        
+        logger.info("This is for information only")
         #deserialize the input json data
         serializer=PositionSerializer(data=request.data)
         try:
