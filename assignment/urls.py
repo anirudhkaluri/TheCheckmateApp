@@ -19,5 +19,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #url paths starting with chess will be handled by chess.urls
     path('chess/',include('chess.urls')),
 ]
