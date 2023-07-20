@@ -8,14 +8,15 @@ diagonal=[(1,1),(-1,-1),(-1,1),(1,-1)]
 horizontal=[(-1,0),(1,0)]
 vertical=[(0,1),(0,-1)]
 knight=[(2,-1),(2,1),(-2,-1),(-2,1),(1,-2),(-1,-2),(1,2),(-1,2)]
-cmap={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
+column_map={"A":1,"B":2,"C":3,"D":4,"E":5,"F":6,"G":7,"H":8}
+row_map={"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
 reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"}
 
 #RETURNS VALID MOVES
 def get_valid_moves(board,slug):
     slug=slug.title()
     #returns a list [x,y] x->row y->column
-    slug_position=get_slug_position(slug,board)
+    slug_position=get_coordinate_position(board[slug])
     #pop slug from the board
     board.pop(slug)
     #get a list of all possible moves as if no other piece is on the board except the slug
@@ -29,9 +30,10 @@ def get_valid_moves(board,slug):
     return answer
 
 #returns position of slug in list form [row,column]
-def get_slug_position(slug,board):
-    position=board[slug]
-    return [int(board[slug][1]),cmap[board[slug][0]]]
+def get_coordinate_position(position):
+        return [row_map[position[1]],column_map[position[0]]]
+
+
 
 #returns a list of all possible positions for slug assuming there is no other piece on the board
 def get_all_possible_moves(slug,starting_position,board):
@@ -80,7 +82,7 @@ def check_limit(position):
 def check_attack_on_positions(possible_moves,board):
     attack_positions=[]
     for piece,piece_position in board.items():
-        from_position=[int(piece_position[1]),cmap[piece_position[0]]]
+        from_position=[int(piece_position[1]),column_map[piece_position[0]]]
         for to_position in possible_moves:
             if direct_move_exists(piece,from_position,to_position,board):
                 attack_positions.append(to_position)
@@ -112,7 +114,7 @@ def direct_move_exists(piece,from_position,to_position,board):
 #checks whether an obstruction exists between two positions on the board due to another piece
 def obstruction_exists(piece,from_position,to_position,board):
     for key,value in board.items():
-        pos=(int(board[key][1]),cmap[board[key][0]])
+        pos=(int(board[key][1]),column_map[board[key][0]])
         if key==piece or (pos[0]==to_position[0] and pos[1]==to_position[1]) or (pos[0]==from_position[0] and pos[1]==from_position[1]):
             continue
         else:
