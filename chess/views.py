@@ -16,6 +16,7 @@ class PositionView(APIView):
     def post(self,request,slug,format='json'):
         
         #deserialize the input json data
+        request.data['slug']=slug
         serializer=PositionSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
@@ -25,10 +26,12 @@ class PositionView(APIView):
             return Response({'errors':error_details},status=400)
 
         #board is a dictionary with position as the only key 
-        board=serializer.validated_data
+        board=serializer.validated_data['positions']
+        slug=serializer.validated_data['slug']
+       
 
-        #board[positions] is an ordered dictionary with locations of teh pieces
-        valid_moves= get_valid_moves(board["positions"],slug)
+        # board[positions] is an ordered dictionary with locations of teh pieces
+        valid_moves= get_valid_moves(board,slug)
         response_data={
             'valid_moves':valid_moves
         }
