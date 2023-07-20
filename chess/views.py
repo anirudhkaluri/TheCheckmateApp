@@ -66,3 +66,6 @@ def get_from_cache(board:dict[str,str],slug:str)->list:
     cache_key = re.sub(r'[,":{} ]', '', cache_key)
     cached_response=cache.get(cache_key)
     return [cached_response,cache_key]
+
+
+#TO-DO implement cache eviction policies when cache is full
