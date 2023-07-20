@@ -1,4 +1,4 @@
-curl --location '127.0.0.1:8000/chess/knight/' \
+curl --location '127.0.0.1:8000/chess/knight' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -19,7 +19,7 @@ Expected Output:
 
 
 
-curl --location '127.0.0.1:8000/chess/queen/' \
+curl --location '127.0.0.1:8000/chess/queen' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -41,7 +41,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -61,7 +61,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -81,7 +81,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -99,7 +99,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/rook/' \
+curl --location '127.0.0.1:8000/chess/rook' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -123,7 +123,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -142,7 +142,7 @@ Expected Output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -161,7 +161,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/rook/' \
+curl --location '127.0.0.1:8000/chess/rook' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -182,7 +182,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -202,7 +202,7 @@ Epxected Output:
 
 
 
-curl --location '127.0.0.1:8000/chess/queen/' \
+curl --location '127.0.0.1:8000/chess/queen' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
@@ -221,7 +221,7 @@ Expected output:
 
 
 
-curl --location '127.0.0.1:8000/chess/bishop/' \
+curl --location '127.0.0.1:8000/chess/bishop' \
 --header 'Content-Type: application/json' \
 --data '{
     "positions": {
