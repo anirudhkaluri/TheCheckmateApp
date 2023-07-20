@@ -6,6 +6,8 @@ from .serializers import PositionSerializer
 from .utils.validMoves import get_valid_moves
 from django.http import JsonResponse
 import logging
+import json
+from django.core.cache import cache
 
 #define a logger 
 #all logs in project.log in root directory
@@ -33,6 +35,13 @@ class PositionView(APIView):
         board=serializer.validated_data['positions']
         #slug is the piece for which we find the valid moves
         slug=serializer.validated_data['slug']
+
+        new_dict=dict(board)
+        new_dict['slug']=slug
+        cache_key=json.dumps(new_dict,sort_keys=True)
+        cached_response=cache.get(cache_key)
+        if cached_response is not None:
+            return JsonResponse(cached_response)
        
 
         # use get_valid_moves to get all moves which the slug can take given the board's configuration
@@ -42,6 +51,9 @@ class PositionView(APIView):
         response_data={
             'valid_moves':valid_moves
         }
+
+        cache.set(cache_key,response_data,60*2)
+
         return JsonResponse(response_data)
 
 
