@@ -13,11 +13,11 @@ row_map={"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8}
 reverse_map={1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G",8:"H"} #for converting numerica coordinates to chess terminology
 
 #RETURNS VALID MOVES
-def get_valid_moves(board,slug):
+def get_valid_moves(board:dict[str,str],slug:str)->list[str]:
 
     #returns a list [x,y] x->row y->column
     slug_position=get_coordinate_position(board[slug])
-    #pop slug from the board
+    #remove the slug from the board. remaining pieces are opponents
     board.pop(slug)
     #get a list of all possible moves as if no other piece is on the board except the slug
     possible_moves=get_all_possible_moves(slug,slug_position,board)
@@ -30,13 +30,13 @@ def get_valid_moves(board,slug):
     return answer
 
 #returns position of slug in list form [row,column]
-def get_coordinate_position(position):
+def get_coordinate_position(position:str)->list[int]:
         return [row_map[position[1]],column_map[position[0]]]
 
 
 
 #returns a list of all possible positions for slug ASSUMING OTHER PIECES DONT ATTACK BUT CAN OBSTRUCT
-def get_all_possible_moves(slug,starting_position,board):
+def get_all_possible_moves(slug:str,starting_position:list,board:dict[str,str])->list[list[int]]:
     possible_moves=[]
     if slug=="Queen":
         #3 possible directions for queen
@@ -57,7 +57,7 @@ def get_all_possible_moves(slug,starting_position,board):
 #axes is a list of axis across which the slug can move. it is a list of lists. 
 #If the slug is a queen, the axes are diagonal, horizontal, vertical
 #all the possible moves are stored in possible_moves list
-def add_positions(slug,starting_position,possible_moves,axes,board):
+def add_positions(slug:str,starting_position:list[int],possible_moves:list[int],axes:list[tuple],board:dict[str,str])->None:
     #for each direction the axes, see what all positions are possible for the slug
     for direction in axes:
         #movement[0] means move movement[0] length in x direction, movement[1] in y direction
@@ -81,13 +81,13 @@ def add_positions(slug,starting_position,possible_moves,axes,board):
 
 
 #checks if the (x,y) coordinate is within the board 
-def check_limit(position):
+def check_limit(position:list[int])->bool:
     if position[0]<1 or position[0]>8 or position[1]<1 or position[1]>8 :
         return False
     return True
 
 #given a set of possible_moves, return only those moves which wont be attacked by pieces on the board 
-def check_attack_on_positions(possible_moves,board):
+def check_attack_on_positions(possible_moves:list[list[int]],board:dict[str,str])->list[list[int]]:
     attack_positions=[] #stores all positions that can be attacked
     for piece,piece_position in board.items():
         position1= get_coordinate_position(piece_position)
@@ -100,7 +100,7 @@ def check_attack_on_positions(possible_moves,board):
     return valid_moves
 
 #checks whether a PIECE can travel from position1 to  position2 in ONE MOVE WITHOUT OBSTRUCTION
-def direct_move_exists(piece,position1,position2,board):
+def direct_move_exists(piece:str,position1:list[int],position2:list[int],board:dict[str,str])->bool:
     same_position=bool(position1[0]==position2[0] and position1[1]==position2[1])
     if same_position:
         return False
@@ -124,7 +124,7 @@ def direct_move_exists(piece,position1,position2,board):
 
 
 #checks whether an obstruction exists between two positions- position1 and position2
-def obstruction_exists(position1,position2,board):
+def obstruction_exists(position1:list[int],position2:list[int],board:dict[str,str])->bool:
     #iterate over the pieces on the board board
     for key,value in board.items():
         position3 = get_coordinate_position(board[key])
