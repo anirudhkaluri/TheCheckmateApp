@@ -10,7 +10,7 @@ from .serializers import PositionSerializer
 # Create your tests here.
 
 
-class SerializerTest(TestCase):
+class PositionSerializerTest(TestCase):
     def test_valid_data(self):
         data={
             "positions":{
@@ -24,7 +24,7 @@ class SerializerTest(TestCase):
         serializer=PositionSerializer(data=data)
         self.assertTrue(serializer.is_valid(raise_exception=True))
        
-
+    #non-fields error
     def test_invalid_piece(self):
         data={
             "positions":{
@@ -48,6 +48,7 @@ class SerializerTest(TestCase):
         self.assertEqual(serializer.errors['non_field_errors'],expected_error)
         self.assertEqual(serializer.errors['non_field_errors'][0],expected_error[0])
 
+    #fields error
     def test_missing_position(self):
         data={
             "positions": {
@@ -62,9 +63,9 @@ class SerializerTest(TestCase):
         self.assertFalse(serializer.is_valid(raise_exception=False))
         expected_error=[ErrorDetail(string='This field may not be blank.', code='blank')]
         #serialize.errors is of type dictionary with key='positions' 
-        #serialize.errors[positions] is another dictionary whose keys are serializers.CharFields()
+        #serialize.errors[positions] is another dictionary whose keys are serializers.CharField()
         #by default CharFields() sets allow_blank to False
-        #Hence positions=serializers.DictField(child=CharField()) fails validation
+        #Hence positions=serializers.DictField(child=CharField()) fails validation since a key in positions dictionary i.e. Queen is blank
         #It is a field error. The field is 'positions'. The key in the dictionary is Queen at which the CharField is blank
         #That is the point where we get the ErrorDetail object which returns a string with error message
         self.assertEqual(serializer.errors['positions']['Queen'][0],expected_error[0])
@@ -72,7 +73,7 @@ class SerializerTest(TestCase):
 
 
 
-class PositionTest(TestCase):
+class PositionViewTest(TestCase):
     def setUp(self):
         self.client=APIClient()
     
@@ -100,7 +101,8 @@ class PositionTest(TestCase):
 
      
 
-class ValidMovesTestCase(TestCase):
+class ValidMovesTest(TestCase):
+
     def test_get_valid_moves(self):
         board={"Queen": "E7", "Bishop": "B7", "Rook":"G5","Knight":"C3"}
         slug="Knight"
