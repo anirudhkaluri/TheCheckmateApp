@@ -89,24 +89,26 @@ def check_attack_on_positions(possible_moves,board):
     valid_moves=[sublist for sublist in possible_moves if sublist not in attack_positions]
     return valid_moves
 
-#checks whether a piece can travel from one position to another position in one move
-def direct_move_exists(piece,from_position,to_position,board):
-    same_position=bool(from_position[0]==to_position[0] and from_position[1]==to_position[1])
+#checks whether a PIECE can travel from position1 to  position1 in ONE MOVE WITHOUT OBSTRUCTION
+def direct_move_exists(piece,position1,position2,board):
+    same_position=bool(position1[0]==position2[0] and position1[1]==position2[1])
     if same_position:
         return False
-    same_diagonal=bool(abs(from_position[0]-to_position[0])==abs(from_position[1]-to_position[1]))
-    same_row= bool(from_position[0]-to_position[0]==0) 
-    same_column=bool(from_position[1]-to_position[1]==0)
-    obstruction=bool(obstruction_exists(from_position,to_position,board))
-    if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction:
+    #check if position1 and position2 are on same diagonal or row or column
+    same_diagonal=bool(abs(position1[0]-position2[0])==abs(position1[1]-position2[1]))
+    same_row= bool(position1[0]-position2[0]==0) 
+    same_column=bool(position1[1]-position2[1]==0)
+    #check if there is any obstuction b/w position1 and position2 due to other pieces on the board
+    obstruction=bool(obstruction_exists(position1,position2,board))
+    if piece=="Queen" and (same_diagonal or same_row or same_column) and not obstruction: #for queen we check diagonal, row, column
         return True
-    elif piece=="Bishop" and same_diagonal and not obstruction:
+    elif piece=="Bishop" and same_diagonal and not obstruction: #for bishop we check only diagonal
         return True
-    elif piece=="Rook" and (same_row or same_column) and not obstruction:
+    elif piece=="Rook" and (same_row or same_column) and not obstruction: #for rook we check row and column 
         return True
-    elif piece=="Knight":
+    elif piece=="Knight": 
         for item in knight:
-            if from_position[0]+item[0]==to_position[0] and from_position[1]+item[1]==to_position[1]:
+            if position1[0]+item[0]==position2[0] and position1[1]+item[1]==position2[1]: #since knight jumps over pieces no need to check for obstruction
                 return True
     return False
 
