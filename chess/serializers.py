@@ -4,8 +4,9 @@ from .utils.validMoves import get_coordinate_position
 
 
 class PositionSerializer(serializers.Serializer):
-    positions=serializers.DictField(child=serializers.CharField())
-    slug=serializers.CharField()
+    #positions is a dictionary. Hence using DictField
+    positions=serializers.DictField(child=serializers.CharField()) #the keys in the dictionary are instances of CharField, allow_blank is FALSE by default
+    slug=serializers.CharField() #slug is a string
 
     #custom validation
     #Exception messages are self-descriptive
@@ -13,11 +14,11 @@ class PositionSerializer(serializers.Serializer):
         valid_pieces={"Queen","Bishop","Knight","Rook"} #set of valid pieces that can be on the baord 
         attrs['slug']=attrs.get('slug').title()  #to make sure the slug is formatted in the correct way.
 
-        board=attrs.get('positions') #the board configurations
+        board=attrs.get('positions') #positions is nothing but the board configurations
         slug=attrs.get('slug') #the slug received from the url
 
-        set_of_positions=set()
-        set_of_pieces=set()
+        set_of_positions=set() #to check that two pieces wont occupy same position
+        set_of_pieces=set() #to check two pieces of same type wont exist
 
         for piece,position in board.items():
             
