@@ -10,8 +10,8 @@ import json
 from django.core.cache import cache
 import re
 
-#define a logger 
-#all logs in project.log in root directory
+ 
+#all logs go into project.log 
 logger=logging.getLogger('chess.views')
 
 
@@ -45,18 +45,19 @@ class PositionView(APIView):
         # use get_valid_moves to get all moves which the slug can take given the board's configuration
         valid_moves= get_valid_moves(board,slug)
 
-        #send response
+        #create response object
         response_data={
             'valid_moves':valid_moves
         }
-        #set cache key and enter the request into the cache
+        #enter the response into cache along with cache key
         #The default time is set to none i.e. it  will persis in cache until it is not cleared,explicitly deleted, or full capcity
-        cache.set(cache_key,response_data,60*2)
-
+        cache.set(cache_key,response_data)
+        #send json response 
         return JsonResponse(response_data)
 
-#handles caching operations
+#searches and returns
 def get_from_cache(board:dict[str,str],slug:str)->list:
+    #creating a new dictionary which will be converted to json string as new cache key
     new_dict=dict(board)
     new_dict['slug']=slug
     #since input is a dictionary serialize it to json to create a cache key
@@ -68,4 +69,3 @@ def get_from_cache(board:dict[str,str],slug:str)->list:
     return [cached_response,cache_key]
 
 
-#FUTURE DEVELOPEMENT: implement cache eviction policies when cache is full
