@@ -178,3 +178,12 @@ class ValidMovesTest(TestCase):
         #expected output will be empty for this configuration
         expected_output_set=set([])
         self.assertSetEqual(output_set,expected_output_set)
+    
+    def test_get_valid_moves7(self):
+        board={"Queen": "D7", "Bishop": "E6", "Rook":"D5","Knight":"C6"}
+        slug="Rook"
+        output=get_valid_moves(board,slug)
+        output_set=set(output)
+        #expected output will be empty for this configuration
+        expected_output_set=set(["G5", "H5", "C5", "B5"])
+        self.assertSetEqual(output_set,expected_output_set)
