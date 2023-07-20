@@ -1,45 +1,52 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+INSTRUCTIONS TO RUN THE PROJECT:
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+1) Clone the repository at https://bitbucket.org/infilectassignment/chessapp/
+2) Open the terminal and navigate into the chessapp directory cloned to your local machine
+3) Execute the following command:
+	$docker compose up -d --build
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+The command starts the app at 127.0.0.1:8000. Kill if any process is already running on that address.
 
----
 
-## Edit a file
+API End Point: 127.0.0.1/chess/<string:slug>
+Method: POST
+Body: JSON data with chessboard positions
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
 
----
+INSTRUCTIONS TO TEST THE PROJECT
+After the App starts running, there are three ways to test:
 
-## Create a file
+1) UNIT TESTS: Run the following command in the terminal
+		$docker compose exec web python manage.py test
 
-Next, you’ll add a new file to this repository.
+    • Class ValidMovesTest: Tests get_valid_moves method in chess/utils/validMoves.py module. There are 7 unique tests to test the core logic of the application. 
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+    • ClassPositionViewTest: Tests PositionView that uses Django REST framework to handle API calls. One positive test and two tests with invalid request format have been tested 
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+    • Class PositionSerializerTest:Tests PositionSerializer that validates incoming data. One positive test and two tests with invalid request format have been tested
 
----
 
-## Clone a repository
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+2) TESTING WITH CURL
+    • Open CurlTests.txt file present in the repository.
+    • Copy a curl command.
+    • Run it in the command line on the terminal.
+    • Verify the output with the expected output present in the same file.
+    • Repeat for all the Curl commands testing different scenarios
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+
+3) IMPORT TESTS INTO POSTMAN
+
+    • Open Postman desktop application
+    • Click on File
+    • Select import
+    • Browse to the Infilect.postman_collection.json file present in the repository
+    • Add as a new collection
+    • Run each request in the collection
+
+
+
+For details regarding the project, please refer to the Documentation.pdf file.
+In case of any queries and further elaborations I request you to contact me.
