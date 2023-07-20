@@ -35,7 +35,7 @@ def get_coordinate_position(position):
 
 
 
-#returns a list of all possible positions for slug assuming there is no other piece on the board
+#returns a list of all possible positions for slug ASSUMING OTHER PIECES DONT ATTACK BUT CAN OBSTRUCT
 def get_all_possible_moves(slug,starting_position,board):
     possible_moves=[]
     if slug=="Queen":
@@ -45,30 +45,38 @@ def get_all_possible_moves(slug,starting_position,board):
         #only diagonal for bishop
         add_positions(slug,starting_position,possible_moves,[diagonal],board)
     elif slug=="Rook":
-        #horizontal and vertical for rook
+        #horizontal and vertical directions possible for rook
         add_positions(slug,starting_position,possible_moves,[horizontal,vertical],board)
     elif slug=="Knight":
-        #knight for knight
+        #Knight for knight
         add_positions(slug,starting_position,possible_moves,[knight],board)
     return possible_moves
 
 
-#adds positions based on the direction rules at the beginning of the file
-def add_positions(slug,starting_position,possible_moves,directions,board):
-    for direction in directions:
-        for item in direction:
-            pos=list(starting_position)
-            pos[0]=pos[0]+item[0]
-            pos[1]=pos[1]+item[1]
+#adds positions based on the direction rules given at the beginning of the file
+#axes is a list of axis across which the slug can move. it is a list of lists. 
+#If the slug is a queen, the axes are diagonal, horizontal, vertical
+#all the possible moves are stored in possible_moves list
+def add_positions(slug,starting_position,possible_moves,axes,board):
+    #for each direction the axes, see what all positions are possible for the slug
+    for direction in axes:
+        #movement[0] means move movement[0] length in x direction, movement[1] in y direction
+        for movement in direction:
+            position=list(starting_position)
+            #start moving/jumping in that direction
+            position[0]=position[0]+movement[0]
+            position[1]=position[1]+movement[1]
             if slug=="Knight":
-                if check_limit(pos):
-                    possible_moves.append(list(pos))
+                #Knight just jumps once, checking if the jump is within the board
+                if check_limit(position):
+                    possible_moves.append(list(position))
                     continue
             else:
-                while check_limit(pos) and not obstruction_exists(starting_position,pos,board):
-                    possible_moves.append(list(pos))
-                    pos[0]=pos[0]+item[0]
-                    pos[1]=pos[1]+item[1]
+                #Rook,Queen,Bishop can keep moving in a straight line. So keep moving in that direction
+                while check_limit(position) and not obstruction_exists(starting_position,position,board):
+                    possible_moves.append(list(position))
+                    position[0]=position[0]+movement[0]
+                    position[1]=position[1]+movement[1]
                 continue
 
 
@@ -87,10 +95,11 @@ def check_attack_on_positions(possible_moves,board):
             #if a direct move exists from position1 to target_position without obstruction, target_position can be attacked
             if direct_move_exists(piece,position1,target_position,board):
                 attack_positions.append(target_position)
+    #remove all the positions that can be attacked from possible_moves. They are the valid moves
     valid_moves=[sublist for sublist in possible_moves if sublist not in attack_positions]
     return valid_moves
 
-#checks whether a PIECE can travel from position1 to  position1 in ONE MOVE WITHOUT OBSTRUCTION
+#checks whether a PIECE can travel from position1 to  position2 in ONE MOVE WITHOUT OBSTRUCTION
 def direct_move_exists(piece,position1,position2,board):
     same_position=bool(position1[0]==position2[0] and position1[1]==position2[1])
     if same_position:
